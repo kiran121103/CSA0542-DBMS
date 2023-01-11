@@ -1,0 +1,130 @@
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 40
+Server version: 5.5.62 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use nkk;
+Database changed
+mysql> create table employee(empid int(3),name varchar(10),experience int(3));
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> desc employee;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| empid      | int(3)      | YES  |     | NULL    |       |
+| name       | varchar(10) | YES  |     | NULL    |       |
+| experience | int(3)      | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.03 sec)
+
+mysql> insert into employee values(121,"rakesh",5);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into employee values(123,"ramu",3);
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into employee values(127,"somesh",7);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select*from employee;
++-------+--------+------------+
+| empid | name   | experience |
++-------+--------+------------+
+|   121 | rakesh |          5 |
+|   123 | ramu   |          3 |
+|   127 | somesh |          7 |
++-------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> savepoint ini;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into employee values(126,"ravi",2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select*from employee;
++-------+--------+------------+
+| empid | name   | experience |
++-------+--------+------------+
+|   121 | rakesh |          5 |
+|   123 | ramu   |          3 |
+|   127 | somesh |          7 |
+|   126 | ravi   |          2 |
++-------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> savepoint ins;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update employee set experience=4 where empid=123;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select*from employee;
++-------+--------+------------+
+| empid | name   | experience |
++-------+--------+------------+
+|   121 | rakesh |          5 |
+|   123 | ramu   |          4 |
+|   127 | somesh |          7 |
+|   126 | ravi   |          2 |
++-------+--------+------------+
+4 rows in set (0.01 sec)
+
+mysql> savepoint upd;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delete from employee where empid=126;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select*from employee;
++-------+--------+------------+
+| empid | name   | experience |
++-------+--------+------------+
+|   121 | rakesh |          5 |
+|   123 | ramu   |          4 |
+|   127 | somesh |          7 |
++-------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> savepoint del;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> rollback to upd;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select*from employee;
++-------+--------+------------+
+| empid | name   | experience |
++-------+--------+------------+
+|   121 | rakesh |          5 |
+|   123 | ramu   |          4 |
+|   127 | somesh |          7 |
+|   126 | ravi   |          2 |
++-------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> rollback to ini;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> select*from employee;
++-------+--------+------------+
+| empid | name   | experience |
++-------+--------+------------+
+|   121 | rakesh |          5 |
+|   123 | ramu   |          3 |
+|   127 | somesh |          7 |
++-------+--------+------------+
+3 rows in set (0.00 sec)

@@ -1,0 +1,120 @@
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 26
+Server version: 5.5.62 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use nkk;
+Database changed
+mysql> show tables;
++---------------+
+| Tables_in_nkk |
++---------------+
+| course        |
+| marks_view    |
+| mdept         |
+| mentees       |
+| mentees1      |
+| per           |
+| student       |
++---------------+
+7 rows in set (0.00 sec)
+
+mysql> select* from mentees;
++-------+-------+-------+------------+-------+---------+
+| regno | name  | dept  | fathername | marks | subject |
++-------+-------+-------+------------+-------+---------+
+|  5043 | sunil | cse   | ram        |    98 | pdsd    |
+|  1045 | kesav | eee   | ravi       |    99 | dbms    |
+|  4079 | kiran | ai&ds | muniraja   |    96 | python  |
++-------+-------+-------+------------+-------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select name,marks,case when marks>98 then 'excellent'when marks>97 then '
+good' else 'average' end as performance from mentees;
++-------+-------+-------------+
+| name  | marks | performance |
++-------+-------+-------------+
+| sunil |    98 | good        |
+| kesav |    99 | excellent   |
+| kiran |    96 | average     |
++-------+-------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select name,marks,if(marks>=97,"excellent marks","good marks") from mente
+es;
++-------+-------+----------------------------------------------+
+| name  | marks | if(marks>=97,"excellent marks","good marks") |
++-------+-------+----------------------------------------------+
+| sunil |    98 | excellent marks                              |
+| kesav |    99 | excellent marks                              |
+| kiran |    96 | good marks                                   |
++-------+-------+----------------------------------------------+
+3 rows in set (0.02 sec)
+
+mysql> delimiter $$
+mysql> create function repeat_demo(inc int)
+    -> returns char(40)
+    -> deterministic
+    -> begin
+    -> declare income int;
+    -> set income=0;
+    -> repeat
+    -> set income=income+inc;
+    -> until income>5000
+    -> end repeat;
+    -> return "income>5000 detected";
+    -> end;
+    -> $$
+Query OK,0 rows affected (0.03 sec)
+
+mysql> select repeat_demo(4000);$$
++----------------------+
+| repeat_demo(4000)    |
++----------------------+
+| income>5000 detected |
++----------------------+
+1 row in set (0.00 sec)
+
+mysql> select repeat_demo(5000);$$
++----------------------+
+| repeat_demo(5000)    |
++----------------------+
+| income>5000 detected |
++----------------------+
+1 row in set (0.00 sec)
+
+mysql> delimiter $$
+mysql> create function while_demo(value char(1))
+    -> returns char(20)
+    -> deterministic
+    -> begin
+    -> declare str char(100);
+    -> declare i int;
+    -> set i=1;
+    -> label:
+    -> while i<=5 do
+    -> set str=concat(str,value);
+    -> set i=i+1;
+    -> end while label;
+    -> return str;
+    -> end;
+    -> $$
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select while_demo('k');$$
++-----------------+
+| while_demo('k') |
++-----------------+
+| kkkkk           |
++-----------------+
+1 row in set (0.01 sec)
+
+
